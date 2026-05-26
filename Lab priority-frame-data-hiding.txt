@@ -1,0 +1,182 @@
+Lab: priority-frame-data-hiding
+Chủ đề
+
+Giấu tin bằng lựa chọn frame ưu tiên theo độ thay đổi cảnh
+
+Mức độ
+
+Nâng cao
+
+Mục tiêu
+
+Sinh viên hiểu:
+
+scene ranking
+frame priority
+adaptive embedding
+payload capacity
+PSNR
+selective steganography
+Kịch bản tổng quát
+
+Một hệ thống truyền tin bí mật cần giảm khả năng bị phát hiện.
+
+Thay vì nhúng dữ liệu vào toàn bộ video, hệ thống:
+
+Phân tích mức độ thay đổi giữa các frame
+Chọn các frame có chuyển cảnh mạnh nhất
+Chỉ nhúng dữ liệu vào các frame này
+Tái tạo stego-video
+Đánh giá chất lượng video
+Kiến thức chính
+Histogram difference
+D
+hist
+	​
+
+=∑∣H
+i
+	​
+
+(k)−H
+i+1
+	​
+
+(k)∣
+
+D
+hist
+	​
+
+=∑
+k=1
+n
+	​
+
+∣H
+i
+	​
+
+(k)−H
+i+1
+	​
+
+(k)∣
+
+PSNR
+PSNR=10log
+10
+	​
+
+MSE
+255
+2
+	​
+
+
+PSNR=10log
+10
+	​
+
+MSE
+255
+2
+	​
+
+
+Workflow
+
+Video
+→ Extract frame
+→ Histogram ranking
+→ Top-N frame
+→ Embed secret
+→ Rebuild video
+→ Quality evaluation
+
+Cấu trúc bài lab
+Container
+
+stego
+
+Network
+
+STEGO_NET
+
+IP
+
+172.31.0.10
+
+Các nhiệm vụ
+Nhiệm vụ 1 — Chuẩn bị secret message
+echo "PTIT_STEGO_SECRET" > secret.txt
+Nhiệm vụ 2 — Tách frame
+python3 extract_frames.py
+Nhiệm vụ 3 — Tính histogram difference
+python3 histogram_diff.py
+Nhiệm vụ 4 — Xếp hạng frame
+python3 rank_frames.py
+
+Output:
+
+results/ranked_frames.txt
+
+Ví dụ:
+
+frame_0031 0.288
+frame_0015 0.271
+frame_0022 0.250
+Nhiệm vụ 5 — Chọn Top-N frame
+python3 select_top_frames.py
+
+Ví dụ:
+
+Selected:
+frame_0031
+frame_0015
+frame_0022
+Nhiệm vụ 6 — Nhúng dữ liệu
+python3 embed_priority.py
+
+Kỹ thuật:
+
+LSB
+hoặc
+DCT-LSB
+
+Output:
+
+stego_frames/
+Nhiệm vụ 7 — Tái tạo stego-video
+python3 rebuild_video.py
+
+Sinh:
+
+stego_video.mp4
+Nhiệm vụ 8 — Đánh giá chất lượng
+python3 evaluate_psnr.py
+
+Output:
+
+results/psnr.txt
+
+Ví dụ:
+
+Average PSNR: 41.22 dB
+Nhiệm vụ 9 — Tách dữ liệu
+python3 extract_secret.py
+
+Kết quả:
+
+PTIT_STEGO_SECRET
+Nhiệm vụ 10 — Checkwork
+checkwork priority_frame_data_hiding
+
+Ví dụ:
+
+Y - rank
+Y - select
+Y - embed
+Y - rebuild
+Y - extract
+Y - psnr
